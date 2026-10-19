@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>白澤 程 · 个人主页</title>
-    <meta name="description" content="白澤 程的个人主页，包含经济统计学、计量经济学、时间序列分析、多元统计分析、综合评价等学习知识库，以及论文格式工具、软件工具等项目">
-    <meta name="keywords" content="经济统计学, 计量经济学, 时间序列分析, 多元统计分析, 综合评价, 统计学原理, 论文写作, Stata, R, Python">
+    <meta name="description" content="白澤 程（王鹏程）的个人主页：经济统计学学习者，考研方向劳动经济学 + 408。涵盖经济统计学论文知识库、计量经济学、时间序列、多元统计、综合评价，以及论文格式工具、中文绘图配置、skill 发布助手等项目">
+    <meta name="keywords" content="王鹏程, 白澤程, wpc6666, 经济统计学, 劳动经济学, 408, 计量经济学, 时间序列, 多元统计, 综合评价, 统计学原理, 论文写作, Stata, R, Python, 日语, 考研">
     <meta name="author" content="白澤 程">
     
     <!-- Google Search Console 验证 -->
@@ -23,8 +23,15 @@
         .header { text-align: center; margin-bottom: 60px; }
         .avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 20px; display: flex; align-items: center; justify-content: center; overflow: hidden; border: 3px solid #fff; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .avatar img { width: 100%; height: 100%; object-fit: cover; }
-        h1 { font-size: 32px; margin-bottom: 10px; color: #1d1d1f; }
-        .bio { font-size: 18px; color: #666; max-width: 600px; margin: 0 auto; }
+        h1 { font-size: 32px; margin-bottom: 6px; color: #1d1d1f; }
+        .aka { font-size: 14px; color: #999; margin-bottom: 14px; }
+        .bio { font-size: 17px; color: #555; max-width: 640px; margin: 0 auto; }
+        .bio p { margin-bottom: 10px; }
+        .bio .tags { margin-top: 14px; font-size: 13.5px; color: #777; line-height: 2; }
+        .bio .tags span { display: inline-block; background: #eef0ff; color: #4a55b8; border-radius: 20px; padding: 2px 12px; margin: 2px 3px; }
+        .header-links { margin-top: 22px; font-size: 14px; }
+        .header-links a { color: #007acc; text-decoration: none; margin: 0 10px; }
+        .header-links a:hover { text-decoration: underline; }
         
         /* 仓库分类 */
         .section { margin-bottom: 50px; }
@@ -45,7 +52,11 @@
         @media (max-width: 768px) {
             .container { padding: 28px 16px; }
             h1 { font-size: 24px; }
-            .bio { font-size: 15.5px; }
+            .bio { font-size: 15px; }
+            .bio .tags { font-size: 12.5px; }
+            .bio .tags span { padding: 2px 9px; }
+            .header-links { font-size: 13px; }
+            .header-links a { margin: 0 6px; }
             .repo-grid { grid-template-columns: 1fr; }
             .repo-card { padding: 18px; }
             .repo-card h3 { font-size: 16px; }
@@ -69,7 +80,22 @@
         <div class="header">
             <div class="avatar"><img src="https://github.com/wpc6666.png" alt="头像"></div>
             <h1>白澤 程</h1>
-            <p class="bio">经济统计学学习者 · 工具开发者</p>
+            <p class="aka">王鹏程 · GitHub @wpc6666</p>
+            <div class="bio">
+                <p>经济统计学专业学习者，正在准备考研，方向是<b>劳动经济学 + 408 计算机学科</b>。</p>
+                <p>平时在经济学、统计学、编程、英语、日语之间来回切换：一边把计量、时间序列、多元统计、综合评价这些课啃成笔记，一边用 Python / R / Stata 把想法跑出来，遇到顺手的工具就开源成仓库。</p>
+                <p>这个主页是我所有公开项目的入口——从一套完整的论文写作知识库，到毕业论文自动排版、macOS 中文绘图环境、skill 发布助手，都在下面。</p>
+                <div class="tags">
+                    <span>经济统计学</span><span>劳动经济学</span><span>计量经济学</span><span>时间序列</span>
+                    <span>多元统计</span><span>综合评价</span><span>Python</span><span>R</span><span>Stata</span>
+                    <span>408</span><span>考研</span><span>日语 N1</span><span>雅思</span>
+                </div>
+            </div>
+            <div class="header-links">
+                <a href="https://github.com/wpc6666" target="_blank">GitHub</a>
+                <a href="https://wpc6666.github.io/economic-statistics-thesis-knowledge/" target="_blank">论文知识库</a>
+                <a href="https://wpc6666.github.io/economic-statistics-thesis-knowledge/exam.html" target="_blank">在线答题</a>
+            </div>
         </div>
         
         <!-- 学习知识库 -->
