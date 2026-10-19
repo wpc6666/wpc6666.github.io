@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#667eea">
+<title>AutoBuildImmortalWrt · ImmortalWrt 固件自动构建</title>
+<meta name="description" content="基于 GitHub Actions 的 ImmortalWrt 固件自动构建工作流：支持 x86-64 / rockchip / mediatek-filogic / glinet / 树莓派 / 全志，可自定义固件大小、预装 Docker、预配置 pppoe 拨号。">
+<meta name="keywords" content="ImmortalWrt,OpenWrt,GitHub Actions,固件编译,Docker,软路由">
+<meta name="author" content="白澤 程">
+<meta property="og:type" content="website">
+<meta property="og:title" content="AutoBuildImmortalWrt · ImmortalWrt 固件自动构建">
+<meta property="og:description" content="基于 GitHub Actions 的 ImmortalWrt 固件自动构建工作流：支持 x86-64 / rockchip / mediatek-filogic / glinet / 树莓派 / 全志，可自定义固件大小、预装 Docker、预配置 pppoe 拨号。">
+<meta property="og:url" content="https://wpc6666.github.io/AutoBuildImmortalWrt/">
+<meta name="twitter:card" content="summary">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#f5f5f7;--card:#fff;--ink:#1d1d1f;--ink2:#666;--ink3:#999;--line:#e5e5ea;
+--brand:#667eea;--brand2:#5568d3;--acc:#007acc;--ok:#1a7f37;--warn:#bf8700;--bad:#cf222e}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','PingFang SC','Hiragino Sans GB','Microsoft YaHei',sans-serif;
+background:var(--bg);color:#333;line-height:1.7;-webkit-text-size-adjust:100%}
+.wrap{max-width:920px;margin:0 auto;padding:40px 20px}
+a{color:var(--acc);text-decoration:none}
+a:hover{text-decoration:underline}
+/* 头部 */
+.hero{text-align:center;margin-bottom:44px}
+.hero h1{font-size:32px;color:var(--ink);letter-spacing:-.4px;line-height:1.3;margin-bottom:12px}
+.hero .sub{font-size:16px;color:var(--ink2);max-width:640px;margin:0 auto 22px}
+.badges{display:flex;gap:7px;justify-content:center;flex-wrap:wrap;margin-bottom:22px}
+.badges img{height:20px}
+.cta{display:flex;gap:11px;justify-content:center;flex-wrap:wrap}
+.btn{display:inline-block;padding:11px 22px;border-radius:9px;font-size:14.5px;font-weight:500;
+transition:background .18s;white-space:nowrap}
+.btn-p{background:var(--brand);color:#fff}
+.btn-p:hover{background:var(--brand2);text-decoration:none}
+.btn-d{background:#24292e;color:#fff}
+.btn-d:hover{background:#3a4046;text-decoration:none}
+.btn-o{background:transparent;color:var(--brand);border:1.5px solid var(--brand)}
+.btn-o:hover{background:rgba(102,126,234,.08);text-decoration:none}
+/* 章节 */
+.sec{margin-bottom:44px}
+.sec>h2{font-size:22px;color:var(--ink);border-left:4px solid var(--brand);
+padding-left:13px;margin-bottom:18px;line-height:1.4}
+.sec>p{font-size:15px;color:var(--ink2);margin-bottom:16px}
+/* 卡片 */
+.card{background:var(--card);border-radius:13px;padding:22px;margin-bottom:14px;
+box-shadow:0 2px 10px rgba(0,0,0,.06)}
+.card h3{font-size:16.5px;color:var(--ink);margin-bottom:9px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.card p{font-size:14.5px;color:var(--ink2)}
+.card p+p{margin-top:8px}
+/* 特性网格 */
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:13px}
+.feat{background:var(--card);border-radius:12px;padding:18px;box-shadow:0 2px 8px rgba(0,0,0,.055);
+border-top:3px solid var(--brand)}
+.feat .t{font-weight:600;color:var(--ink);font-size:14.5px;margin-bottom:7px}
+.feat .d{font-size:13.5px;color:var(--ink2);line-height:1.65}
+/* 代码 */
+pre{background:#1d1d1f;color:#e6e6e6;border-radius:10px;padding:16px 18px;margin:12px 0;
+font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;font-size:13px;line-height:1.65;
+max-width:100%;box-sizing:border-box;white-space:pre-wrap;word-break:break-word;overflow-wrap:anywhere}
+code{background:#eef0f3;padding:2px 6px;border-radius:5px;font-size:13px;color:#c7254e;
+font-family:'SF Mono',Menlo,Monaco,Consolas,monospace;word-break:break-word}
+pre code{background:none;padding:0;color:inherit;font-size:inherit}
+.cm{color:#7d8590}
+/* 表格 */
+.tw{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:11px;margin:12px 0}
+.tw table{width:100%;border-collapse:collapse;background:var(--card);font-size:14px;min-width:280px}
+.tw.is-scrollable::before{content:"← 左右滑动查看完整表格 →";display:block;font-size:11px;
+color:var(--ink3);text-align:center;padding:6px 0 3px}
+.th-wrap::before{content:none}
+th{background:#f0f2f5;padding:11px 13px;text-align:left;font-weight:600;color:var(--ink);
+border-bottom:2px solid #e1e4e8;font-size:13.5px}
+td{padding:10px 13px;border-bottom:1px solid #eee;color:var(--ink2);vertical-align:top;
+word-break:break-word}
+tr:last-child td{border-bottom:none}
+/* 列表 */
+ul.nice{list-style:none;padding:0}
+ul.nice li{position:relative;padding-left:22px;margin-bottom:9px;font-size:14.5px;color:var(--ink2)}
+ul.nice li::before{content:"›";position:absolute;left:6px;color:var(--brand);font-weight:700}
+ol.steps{list-style:none;counter-reset:s;padding:0}
+ol.steps li{counter-increment:s;position:relative;padding-left:36px;margin-bottom:15px;
+font-size:14.5px;color:var(--ink2);min-width:0}
+ol.steps li::before{content:counter(s);position:absolute;left:0;top:1px;width:25px;height:25px;
+border-radius:50%;background:rgba(102,126,234,.13);color:var(--brand);font-weight:700;
+display:flex;align-items:center;justify-content:center;font-size:12.5px;line-height:1}
+ol.steps li>*{min-width:0}
+/* 提示块 */
+.note{background:#fff8e6;border-left:4px solid #f0b429;border-radius:8px;padding:14px 16px;
+margin:14px 0;font-size:14px;color:#6b5200}
+.note code{background:rgba(0,0,0,.06);color:#8a5a00}
+.warn{background:#ffebe9;border-left:4px solid var(--bad);border-radius:8px;padding:14px 16px;
+margin:14px 0;font-size:14px;color:#82071e}
+.ok{background:#e8f5ec;border-left:4px solid var(--ok);border-radius:8px;padding:14px 16px;
+margin:14px 0;font-size:14px;color:#0a3622}
+/* 标签 */
+.tag{display:inline-block;padding:2px 9px;border-radius:20px;font-size:11.5px;font-weight:600;
+background:rgba(102,126,234,.12);color:var(--brand)}
+.tag.g{background:rgba(26,127,55,.12);color:var(--ok)}
+.tag.y{background:rgba(191,135,0,.14);color:var(--warn)}
+.tag.r{background:rgba(207,34,46,.12);color:var(--bad)}
+/* 页脚 */
+footer{text-align:center;margin-top:56px;padding-top:26px;border-top:1px solid var(--line);
+color:var(--ink3);font-size:13.5px}
+footer a{color:var(--acc)}
+footer p+p{margin-top:6px}
+/* 手机 */
+@media(max-width:768px){
+  .wrap{padding:26px 15px}
+  .hero{margin-bottom:32px}
+  .hero h1{font-size:25px}
+  .hero .sub{font-size:14.5px}
+  .sec{margin-bottom:34px}
+  .sec>h2{font-size:19px;padding-left:11px;margin-bottom:15px}
+  .sec>p{font-size:14px}
+  .card{padding:17px;border-radius:11px}
+  .card h3{font-size:15.5px}
+  .card p{font-size:14px}
+  .grid{grid-template-columns:1fr;gap:11px}
+  .feat{padding:15px}
+  pre{font-size:11.5px;padding:13px 14px;border-radius:8px}
+  code{font-size:11.5px}
+  .tw table{font-size:12.5px}
+  th,td{padding:8px 9px}
+  ul.nice li,ol.steps li{font-size:13.5px}
+  .btn{padding:11px 18px;font-size:14px}
+  .note,.warn,.ok{font-size:13px;padding:12px 14px}
+  footer{font-size:12.5px}
+}
+@media(max-width:380px){
+  .wrap{padding:20px 12px}
+  .hero h1{font-size:22px}
+  .card{padding:14px}
+  pre{font-size:11px}
+}
+
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<section class="hero">
+  <h1>AutoBuild<span style="color:var(--brand)">ImmortalWrt</span></h1>
+  <p class="sub">基于 GitHub Actions 的 ImmortalWrt 固件自动构建工作流。一键产出带 Docker、可自定义固件大小的 OpenWrt / ImmortalWrt 固件。</p>
+  <div class="badges">
+    <span class="tag g">GPL-3.0</span><span class="tag">GitHub Actions</span><span class="tag y">Fork</span><span class="tag r">刷机有风险</span>
+  </div>
+  <div class="cta" style="margin-top:22px">
+    <a class="btn btn-d" href="https://github.com/wpc6666/AutoBuildImmortalWrt">GitHub 仓库</a>
+    <a class="btn btn-o" href="https://github.com/wukongdaily/AutoBuildImmortalWrt">上游原项目</a>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>这是什么</h2>
+  <div class="card">
+    <p>一个跑在 GitHub Actions 上的固件编译工作流。你在网页上点一下 <code>Run workflow</code>，云端自动编译出 ImmortalWrt 固件，编译完成后到 Releases 下载刷机。不需要本地装编译环境。</p>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>支持平台</h2>
+  <div class="tw"><table>
+    <thead><tr><th>平台</th><th>型号 / 架构</th></tr></thead>
+    <tbody>
+      <tr><td>x86-64</td><td>软路由、迷你主机</td></tr>
+      <tr><td>rockchip</td><td>R2S / R4S / R5S 等</td></tr>
+      <tr><td>mediatek-filogic</td><td>MT3000 / MT2500 / MT6000 / B2200</td></tr>
+      <tr><td>glinet</td><td>GL.iNet 系列</td></tr>
+      <tr><td>raspberrypi</td><td>树莓派 ①②③④⑤</td></tr>
+      <tr><td>sunxi-cortexa53</td><td>全志 R1S、香橙派 Zero3</td></tr>
+      <tr><td>armsr-armv8</td><td>ARM64 QEMU 虚拟机</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="sec">
+  <h2>核心特性</h2>
+  <div class="grid">
+    <div class="card feat"><div class="t">自定义固件大小</div><div class="d">默认 1 GB，可在工作流里改</div></div>
+    <div class="card feat"><div class="t">预装 Docker</div><div class="d">勾选即带上 docker-ce</div></div>
+    <div class="card feat"><div class="t">pppoe 预配置</div><div class="d">填宽带账号密码，开机即拨号</div></div>
+    <div class="card feat"><div class="t">云端编译</div><div class="d">不占本地资源，约 2–4 小时</div></div>
+  </div>
+</section>
+
+<section class="sec">
+  <h2>使用步骤</h2>
+  <ol class="steps">
+    <li><strong>Fork 仓库</strong> — 到你自己的账号下</li>
+    <li><strong>启用 Actions</strong> — 在 Actions 标签页点 <code>I understand my workflows, go ahead and enable them</code></li>
+    <li><strong>运行工作流</strong> — 左侧选平台，右侧 <code>Run workflow</code>，按需勾选 Docker / 拨号 / 固件大小</li>
+    <li><strong>下载固件</strong> — 编译完成后到 Releases 页面下载</li>
+  </ol>
+</section>
+
+<section class="sec">
+  <h2>默认网络属性（必读）</h2>
+  <div class="tw"><table>
+    <thead><tr><th>设备类型</th><th>默认行为</th></tr></thead>
+    <tbody>
+      <tr><td>单网口</td><td>DHCP 模式，IP 由上级路由分配</td></tr>
+      <tr><td>多网口</td><td>eth0 为 WAN（DHCP），其余 LAN，管理地址 <code>192.168.100.1</code></td></tr>
+      <tr><td>勾选拨号</td><td>WAN 口走 pppoe 拨号</td></tr>
+    </tbody>
+  </table></div>
+  <div class="warn"><strong>旁路由用户注意：</strong>不要改配置文件里的默认 IP 来设置旁路。旁路由应走单网口模式，先接上级路由，在上级路由后台查到它被分配的 IP，再访问配置。</div>
+</section>
+
+<section class="sec">
+  <h2>目录结构</h2>
+<pre>x86-64/            build.sh · imm.config
+rockchip/          build.sh · imm.config · target.txt
+mediatek-filogic/  build.sh · build-24.sh · info.md
+glinet/            99-custom.sh
+raspberrypi/       23.05.4/ · 24.10/
+sunxi-cortexa53/   build.sh · info.md
+armsr-armv8/       build.sh · imm.config · info.md
+files/             通用定制文件
+.github/workflows/ 11 个工作流（每平台 23.05.4 与 24.10.1 两版）</pre>
+</section>
+
+<section class="sec">
+  <h2>风险提示</h2>
+  <div class="warn">刷机有变砖风险。请先确认机型与固件严格对应，准备好救砖手段（TFTP 恢复 / 串口 / 官方恢复工具），不要在主力设备上首次尝试。</div>
+</section>
+
+<footer>
+<p>© 2026 白澤 程 · GPL-3.0 License</p>
+<p><a href="https://github.com/wpc6666/AutoBuildImmortalWrt">GitHub 仓库</a> · <a href="https://wpc6666.github.io/">返回主页</a></p>
+</footer>
+</div>
+<script>
+/* 表格横滑提示：只有真的放不下才显示 */
+document.querySelectorAll('.tw').forEach(function(w){
+  function upd(){
+    w.classList.toggle('is-scrollable', w.scrollWidth - w.clientWidth > 1);
+  }
+  w.addEventListener('scroll', upd, {passive:true});
+  window.addEventListener('resize', upd);
+  window.addEventListener('orientationchange', upd);
+  if (window.ResizeObserver) new ResizeObserver(upd).observe(w);
+  upd();
+});
+</script>
+</body>
+</html>
