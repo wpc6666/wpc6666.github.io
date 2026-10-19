@@ -25,7 +25,7 @@
 
 | 项目 | 说明 |
 |---|---|
-| [经济统计学论文写作知识库](https://wpc6666.github.io/economic-statistics-thesis-knowledge/) | 从 0 基础到论文精通。5 门课程 / 637 篇笔记 / 83 张导图 |
+| [经济统计学论文写作知识库](https://wpc6666.github.io/economic-statistics-thesis-knowledge/) | 从 0 基础到论文精通。7 门课程 / 1143 篇笔记 / 10500+ 双向链接 / 在线题库+错题本 |
 
 ### 🛠️ 工具项目
 
