@@ -43,9 +43,23 @@
         .footer { text-align: center; margin-top: 60px; padding-top: 30px; border-top: 1px solid #ddd; color: #999; font-size: 14px; }
         
         @media (max-width: 768px) {
+            .container { padding: 28px 16px; }
             h1 { font-size: 24px; }
-            .bio { font-size: 16px; }
+            .bio { font-size: 15.5px; }
             .repo-grid { grid-template-columns: 1fr; }
+            .repo-card { padding: 18px; }
+            .repo-card h3 { font-size: 16px; }
+            .repo-card p { font-size: 13.5px; }
+            .avatar { width: 96px; height: 96px; }
+            .links { gap: 10px; }
+            .links a { font-size: 14px; padding: 8px 14px; }
+            code { font-size: 12.5px; word-break: break-word; }
+            .footer { font-size: 13px; }
+        }
+        @media (max-width: 380px) {
+            h1 { font-size: 21px; }
+            .container { padding: 22px 13px; }
+            .repo-card { padding: 15px; }
         }
     </style>
 </head>
