@@ -62,7 +62,7 @@
 | 特性 | 实现 |
 |---|---|
 | **纯静态** | 原生 HTML + CSS，无框架依赖，加载快、易维护 |
-| **手机适配** | 三档媒体查询（768 / 640 / 380 px），320 px 起零横向溢出 |
+| **手机适配** | 两档媒体查询（768 / 380 px），320 px 起零横向溢出 |
 | **SEO 就绪** | description / keywords / author 元信息；已接入 Google Search Console 与必应 Webmaster |
 | **搜索配置** | `robots.txt` + `sitemap.xml` |
 | **一键托管** | 推送 `main` 即自动发布到 GitHub Pages，无需构建 |
